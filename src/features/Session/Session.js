@@ -242,7 +242,7 @@ export function Session (InputProps) {
 
   function copy () {
     const el = document.createElement("input");
-    el.value = "https://pages.git.target.com" + window.location.pathname;
+    el.value = window.location.pathname;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
@@ -251,7 +251,7 @@ export function Session (InputProps) {
 
     return (
       <div>
-        <Link to="/lauren-malik/lauren-malik.github.io" onClick={ event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setShow(false)]}>
+        <Link to="/" onClick={ event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setShow(false)]}>
           <h1>Problem Pointer</h1>
         </Link>
         <h2 className={classes.linkIcon}>Session - {window.location.pathname.split('/')[4]}</h2>
