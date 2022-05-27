@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,KACE,iBACF,CAEA,GACE,aAAc,CACd,cACF,CAEA,EACE,oBACF","file":"main.f5e32fbd.chunk.css","sourcesContent":[".App {\n  text-align: center;\n}\n\nh1 {\n  color: #6fee86;\n  font-size: 65px;\n}\n\na {\n  text-decoration: none;\n}\n"]}

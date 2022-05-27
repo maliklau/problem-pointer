@@ -79,6 +79,7 @@ export function HomePage (InputProps) {
   function setSession (sessionId) {
     const db = getDatabase()
     const dbRef = ref(db, 'sessions/' +sessionId)
+    console.log("here")
   }
 
   function checkSession (sessionId) {
@@ -99,11 +100,11 @@ export function HomePage (InputProps) {
 
   return (
     <div>
-      <Link to="/lauren-malik/lauren-malik.github.io" onClick={event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setNameSubmit(false), setShow(false)]}>
+      <Link to="/" onClick={event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setNameSubmit(false), setShow(false)]}>
         <h1>Problem Pointer</h1>
       </Link>
         <div>
-          <Link to={"/lauren-malik/lauren-malik.github.io/session/"+(Math.floor(Math.random() * 10000) + 1)}>
+          <Link to={"/session/"+(Math.floor(Math.random() * 10000) + 1)}>
             <Button variant="contained" className={classes.new}>New Session</Button>
           </Link>
           <form className={classes.root} autoComplete="off">
@@ -114,12 +115,12 @@ export function HomePage (InputProps) {
             id="standard-basic" label="Session ID"/>
           </form>
           {sessionExists &&
-            <Link to={"/lauren-malik/lauren-malik.github.io/session/"+sessionId}>
+            <Link to={"/session/"+sessionId}>
               <Button variant="contained" className={classes.join} onClick={event => [setSessionId(sessionId)]}>Join Existing</Button>
             </Link>
           }
           {!sessionExists &&
-            <Link to={"/lauren-malik/lauren-malik.github.io/"}>
+            <Link to={"/"}>
               <Button variant="contained" className={classes.join}>Join Existing</Button>
             </Link>
           }
