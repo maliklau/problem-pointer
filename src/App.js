@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './favicon.ico';
 import Session from './features/Session/Session';
 import HomePage from './features/HomePage/HomePage';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
