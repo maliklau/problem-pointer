@@ -6,6 +6,8 @@ import LinkIcon from '@material-ui/icons/Link';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Divider from '@material-ui/core/Divider';
 import Session from '../Session/Session';
+import Picker from 'emoji-picker-react';
+import logoImage from '../../favicon-32x32.png'
 import { initializeApp, db, app } from "../Firebase/initFirebase.js";
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { getDatabase, ref, set, child, get, push, onValue, update } from "firebase/database";
@@ -79,7 +81,6 @@ export function HomePage (InputProps) {
   function setSession (sessionId) {
     const db = getDatabase()
     const dbRef = ref(db, 'sessions/' +sessionId)
-    console.log("here")
   }
 
   function checkSession (sessionId) {
@@ -101,7 +102,11 @@ export function HomePage (InputProps) {
   return (
     <div>
       <Link to="/" onClick={event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setNameSubmit(false), setShow(false)]}>
-        <h1>Problem Pointer</h1>
+        <div>
+          <h1>Problem
+            <img src={logoImage} alt="point"/>
+          Pointer</h1>
+        </div>
       </Link>
         <div>
           <Link to={"/session/"+(Math.floor(Math.random() * 10000) + 1)}>

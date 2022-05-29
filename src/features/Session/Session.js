@@ -6,6 +6,10 @@ import LinkIcon from '@material-ui/icons/Link';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import HomePage from '../HomePage/HomePage'
 import Divider from '@material-ui/core/Divider';
+import Picker from 'emoji-picker-react';
+import logoImage from '../../favicon-32x32.png'
+import Box from '@mui/material/Box';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import { initializeApp, db, app } from "../Firebase/initFirebase.js";
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { getDatabase, ref, set, child, get, push, onValue, update } from "firebase/database";
@@ -84,6 +88,8 @@ export function Session (InputProps) {
   const [users, setUsers] = useState([])
   const [sessionId, setSessionId] = useState(window.location.pathname.split('/')[4])
   const [initialState, setInitial] = useState(true)
+  const [chosenEmoji, setChosenEmoji] = useState(null)
+  const [displayEmojis, setDisplayEmojis] = useState(null)
 
   function handlePointClick (name=name, point='') {
     const db = getDatabase()
@@ -103,6 +109,11 @@ export function Session (InputProps) {
       handlePointClick(user[0],"")
     ))
   }
+
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
+    setName(name + emojiObject.emoji)
+  };
 
   function updateDB (name, point) {
     const db = getDatabase()
@@ -242,7 +253,7 @@ export function Session (InputProps) {
 
   function copy () {
     const el = document.createElement("input");
-    el.value = window.location.pathname;
+    el.value = "https://problem-pointer.web.app" + window.location.pathname;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
@@ -252,19 +263,29 @@ export function Session (InputProps) {
     return (
       <div>
         <Link to="/" onClick={ event => [setUserId(''), setSessionId(''), setName(''), setPoint(''), setShow(false)]}>
-          <h1>Problem Pointer</h1>
+          <h1>Problem
+            <img src={logoImage} alt="point"/>
+          Pointer</h1>
         </Link>
-        <h2 className={classes.linkIcon}>Session - {window.location.pathname.split('/')[4]}</h2>
+        <h2 className={classes.linkIcon}>Session - {window.location.pathname.split('/')[2]}</h2>
         <Button className={classes.linkButton}>
           <LinkIcon className={classes.linkIcon} onClick={event => copy()}/>
         </Button>
         {!nameSubmitted &&
-          <form className={classes.root} autoComplete="off" onSubmit={(event) => [
-            setNameSubmit(true),
-            setSessionId(window.location.pathname.split('/')[4]),
-            updateDB(name,'')]}>
-            <TextField InputProps={{className: classes.input}} value={name} onChange={event => setName(event.target.value)} id="standard-basic" label="Name"/>
-          </form>
+          <div>
+            <form className={classes.root} autoComplete="off" onSubmit={(event) => [
+              setNameSubmit(true),
+              setSessionId(window.location.pathname.split('/')[2]),
+              updateDB(name,'')]}>
+              <TextField InputProps={{className: classes.input}} value={name} onChange={event => setName(event.target.value)} id="standard-basic" label="Name"/>
+              <Button onClick={event => setDisplayEmojis(true)}>
+                <InsertEmoticonIcon sx={{ color: primary }}/>
+              </Button>
+            </form>
+            {displayEmojis &&
+              <Picker onEmojiClick={onEmojiClick} />
+            }
+          </div>
         }
         {getSession(sessionId)}
       </div>
