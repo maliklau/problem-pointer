@@ -10,39 +10,47 @@ import logoImage from '../../favicon-32x32.png'
 import Box from '@mui/material/Box';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import { initializeApp, db, app } from "../Firebase/initFirebase.js";
+import IconButton from '@mui/material/IconButton';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { getDatabase, ref, set, child, get, push, onValue, update } from "firebase/database";
-import getStyles from './style.js';
+import useStyles from './style.js';
 import Header from '../Header/Header';
 import PointButtons from '../PointButtons/PointButtons';
 
-const primary = '#6fee86';
 var total = 0;
 var mean = 0;
 
+const dark = '#6fee86';
+const light = '#4b216e';
+
 export function Session (props) {
-  const classes = getStyles()
+  const classes = useStyles(props.mode)
+
   const [name, setName] = useState('')
   const [userId, setUserId] = useState('')
   const [nameSubmitted, setNameSubmit] = useState(false)
-  const [point, setPoint] = useState('')
-  const [show, setShow] = useState(false)
-  const [users, setUsers] = useState([])
   const [sessionId, setSessionId] = useState(window.location.pathname.split('/')[2])
-  const [initialState, setInitial] = useState(true)
   const [chosenEmoji, setChosenEmoji] = useState(null)
   const [displayEmojis, setDisplayEmojis] = useState(null)
-  //
-  // function clearPoints (users) {
-  //   users.map(user => (
-  //     handlePointClick(user[0],"")
-  //   ))
-  // }
+
+  let darkMode = false
+
+  if (props.mode === 'dark') {
+    darkMode = true
+  }
 
   const onEmojiClick = (event, emojiObject) => {
     setChosenEmoji(emojiObject);
     setName(name + emojiObject.emoji)
   };
+
+  function displayEmojisOrNot() {
+    if (displayEmojis) {
+      setDisplayEmojis(false)
+    } else {
+      setDisplayEmojis(true)
+    }
+  }
 
   function updateDB (name) {
     const db = getDatabase()
@@ -54,83 +62,12 @@ export function Session (props) {
     })
   }
 
-  // function getCalculations(users) {
-  //   var modeList = [0,0,0,0,0,0,0,0,0]
-  //   var totalList = []
-  //   var mode = 0
-  //   var mean = 0
-  //   var total = 0
-  //   var submittedPoints = users.length
-  //
-  //   users.map(user => (
-  //     totalList = checkUser(user[1],total, submittedPoints, modeList),
-  //     total = totalList[0],
-  //     submittedPoints = totalList[1],
-  //     modeList = totalList[2]
-  //   ))
-  //   return (
-  //     <div className={classes.results}>
-  //       <p>Mean: 4.33</p>
-  //       <p>Mode: 3</p>
-  //     </div>
-  //   )
-  // }
-
-  function printUsers(users) {
-    return (
-      <div className={classes.users}>
-        {users.map(user => (
-          <p>{user[0]}{user[1]}</p>
-        ))}
-      </div>
-    )
-  }
-
-  function currentUser(userName, userPoint) {
-    if(userName === name) {
-      return (
-        <div>
-          <p>{userName}{userPoint}</p>
-        </div>
-      )
-    } else {
-        return (
-          <div>
-            <p>{userName}</p>
-          </div>
-        )
-    }
-  }
-
   function printUsersNoShow(users) {
     return (
       <div className={classes.users}>
         {users.map(user => (
           <p>{user[0]}</p>
         ))}
-      </div>
-    )
-  }
-
-  function getSession (sessionId) {
-    const db = getDatabase()
-    const dbRef = ref(db, sessionId)
-    const users = []
-    onValue(dbRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childKey = childSnapshot.key;
-        const childData = childSnapshot.val();
-        users.push([childData.name, childData.point])
-      });
-    });
-    return (
-      <div>
-        <div>
-          {printUsers(users)}
-        </div>
-        {!show &&
-          printUsersNoShow(users)
-        }
       </div>
     )
   }
@@ -146,21 +83,21 @@ export function Session (props) {
 
     return (
       <div>
-        <Header/>
-        <h2 className={classes.linkIcon}>Session - {window.location.pathname.split('/')[2]}</h2>
-        <Button className={classes.linkButton}>
-          <LinkIcon className={classes.linkIcon} onClick={event => copy()}/>
-        </Button>
+        <Header mode={darkMode}/>
+        <h2 className={darkMode ? classes.linkIconDark : classes.linkIcon}>Session - {window.location.pathname.split('/')[2]}</h2>
+        <IconButton style={{ display: '0', marginBottom: '0.3em', marginLeft: '0.3em' }}>
+          <LinkIcon className={darkMode ? classes.linkIconDark : classes.linkIcon} onClick={event => copy()}/>
+        </IconButton>
         {!nameSubmitted &&
           <div>
-            <form className={classes.root} autoComplete="off" onSubmit={(event) => [
+            <form className={classes.root} style={{'& .MuiFormControl-root': darkMode ? { color: dark } : { color: light } }} autoComplete="off" onSubmit={(event) => [
               setNameSubmit(true),
               setSessionId(window.location.pathname.split('/')[2]),
               updateDB(name)]}>
-              <TextField InputProps={{className: classes.input}} value={name} onChange={event => setName(event.target.value)} id="standard-basic" label="Name"/>
-              <Button onClick={event => setDisplayEmojis(true)}>
-                <InsertEmoticonIcon sx={{ color: primary }}/>
-              </Button>
+              <TextField InputProps={{color: dark}} value={name} onChange={event => setName(event.target.value)} id="standard-basic" label="Name"/>
+              <IconButton onClick={event => displayEmojisOrNot()} style={{ marginTop: '0.5em' }}>
+                <InsertEmoticonIcon className={darkMode ? classes.emotionIconDark : classes.emotionIcon}/>
+              </IconButton>
             </form>
             {displayEmojis &&
               <Picker onEmojiClick={onEmojiClick} />
@@ -168,11 +105,8 @@ export function Session (props) {
           </div>
         }
         {nameSubmitted &&
-          getSession()
-        }
-        {nameSubmitted &&
           <div>
-            <PointButtons userId={ userId } sessionId={ sessionId } name={ name }/>
+            <PointButtons userId={ userId } sessionId={ sessionId } name={ name } mode={darkMode}/>
           </div>
         }
       </div>
