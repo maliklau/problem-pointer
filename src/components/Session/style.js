@@ -5,26 +5,6 @@ const light = '#4b216e';
 let mode = "";
 
 export const useStyles = makeStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: dark,
-      fontFamily: 'Kdam Thmor Pro,sans-serif',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: dark,
-    },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: dark,
-    },
-    '& label': {
-      color: dark,
-      fontFamily: 'Kdam Thmor Pro,sans-serif',
-    },
-    '& .MuiButtonGroup-root': {
-      borderColor: dark,
-      color: dark
-    },
-  },
   h1: {
     color: dark,
   },
@@ -33,12 +13,6 @@ export const useStyles = makeStyles({
   },
   emotionIcon: {
     color: light
-  },
-  inputDark: {
-    color: dark,
-  },
-  input: {
-    color: light,
   },
   linkIconDark: {
     color: dark,
@@ -83,9 +57,9 @@ export const useStyles = makeStyles({
     marginBottom: 25,
     fontFamily: 'Kdam Thmor Pro,sans-serif',
   },
-  colorMode: {
-    color: dark,
-  }
+  form: {
+    fontFamily: 'Kdam Thmor Pro,sans-serif',
+  },
 });
 
 export default useStyles;

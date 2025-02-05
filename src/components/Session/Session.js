@@ -39,6 +39,35 @@ export function Session (props) {
     darkMode = true
   }
 
+  const textFieldStyles = makeStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: darkMode ? dark : light,
+        fontFamily: 'Kdam Thmor Pro,sans-serif',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: darkMode ? dark : light,
+      },
+      '& .MuiInput-underline:before': {
+        borderBottomColor: darkMode ? dark : light,
+      },
+      '& label': {
+        color: darkMode ? dark : light,
+        fontFamily: 'Kdam Thmor Pro,sans-serif',
+      },
+      '& .MuiButtonGroup-root': {
+        borderColor: darkMode ? dark : light,
+        color: darkMode ? dark : light
+      },
+    },
+    input: {
+      color: darkMode ? dark : light,
+      fontFamily: 'Kdam Thmor Pro,sans-serif',
+    }
+  });
+
+  const textClasses = textFieldStyles()
+
   const onEmojiClick = (event, emojiObject) => {
     setChosenEmoji(emojiObject);
     setName(name + emojiObject.emoji)
@@ -90,17 +119,21 @@ export function Session (props) {
         </IconButton>
         {!nameSubmitted &&
           <div>
-            <form className={classes.root} style={{'& .MuiFormControl-root': darkMode ? { color: dark } : { color: light } }} autoComplete="off" onSubmit={(event) => [
+            <form className={textClasses.root} autoComplete="off" onSubmit={(event) => [
               setNameSubmit(true),
               setSessionId(window.location.pathname.split('/')[2]),
               updateDB(name)]}>
-              <TextField InputProps={{color: dark}} value={name} onChange={event => setName(event.target.value)} id="standard-basic" label="Name"/>
+              <TextField
+                InputProps={{className: textClasses.input}}
+                value={name}
+                onChange={event => setName(event.target.value)}
+                id="standard-basic" label="Name"/>
               <IconButton onClick={event => displayEmojisOrNot()} style={{ marginTop: '0.5em' }}>
                 <InsertEmoticonIcon className={darkMode ? classes.emotionIconDark : classes.emotionIcon}/>
               </IconButton>
             </form>
             {displayEmojis &&
-              <Picker onEmojiClick={onEmojiClick} />
+              <Picker pickerStyle={{ display: 'inline-block', fontFamily: 'Kdam Thmor Pro,sans-serif' }} onEmojiClick={onEmojiClick} />
             }
           </div>
         }

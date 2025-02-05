@@ -4,26 +4,6 @@ const dark = '#6fee86';
 const light = '#4b216e';
 
 export const useStyles = makeStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: dark,
-      fontFamily: 'Kdam Thmor Pro,sans-serif',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: dark,
-    },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: dark,
-    },
-    '& label': {
-      color: dark,
-      fontFamily: 'Kdam Thmor Pro,sans-serif',
-    },
-    '& .MuiButtonGroup-root': {
-      borderColor: dark,
-      color: dark
-    },
-  },
   h1Dark: {
     color: dark,
   },
