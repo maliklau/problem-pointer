@@ -44,7 +44,9 @@ function App() {
           <Route exact path="/" component={() => (<HomePage mode={theme.palette.mode} />)}/>
           <Route path="/session/:sessionId" component={() => (<Session mode={theme.palette.mode} />)}/>
         </Switch>
-        <footer style={ darkMode ? {color: dark, fontSize: '0.8em'} : {color: light, fontSize: '0.8em'} }>Problem Pointer | the.lauren.malik@gmail.com</footer>
+        <footer style={ darkMode ? {color: dark, fontSize: '0.8em'} : {color: light, fontSize: '0.8em'} }>
+        Problem Pointer | the.lauren.malik@gmail.com | github.com/maliklau/problem-pointer
+        </footer>
       </div>
     </Router>
   );
